@@ -1,0 +1,224 @@
+ db.developers.aggregate([
+    {
+        $group: {
+            _id: "specialty",
+            total_salary: {$sum: "$salary"}
+        }
+    }
+ ]) 
+
+//  Найти средний возраст студентов для каждого пола
+
+db.students.aggregate([
+    {
+        $group: {
+            _id: "$gender",
+            avg_age: {$avg: "$age"}
+        }
+    }
+])
+
+db.developers.aggregate([
+    {
+        $group: {
+            _id: "specialty",
+            first_developer: {$first: "$title"}
+        }
+    }
+])
+
+// Написать запрос, который выводит название города, имя первого студента и имя последнего
+db.students.aggregate([
+    {
+        $group: {
+            _id: "city",
+            first_student: {$first: "$first_name"},
+            last_student: {$last: "$first_name"}
+        }
+    }
+
+])
+
+// написать запрос, который выводит 
+название пола,
+имя первого студента данного пола
+фамилию первого студента данного пола
+
+
+ db.students.aggregate([
+    {
+        _id: "gender",
+        first_name: {$first: "$first_name"},
+        last_name: {$first: "$last_name"}
+    }
+ ])
+
+
+ db.developers.aggregate([{
+    $project: {
+        _id: 1,
+        title: 1,
+        specialty: 1,
+        first_skill: {$first: "$skills"}
+    }
+ }])
+
+//   вывести имя и фамилию студента и его максимальную оценку
+
+db.students.aggregate([{
+    $project: {
+        first_name: 1,
+        last_name: 1,
+        max_mark: {$max: "$marks"}
+    }
+}])
+
+//   вывести имя и фамилию студента и его максимальную, минимальную и среднюю оценку
+db.students.aggregate([{
+    $project: {
+        first_name: 1,
+        last_name: 1,
+        max_mark: {$max: "$marks"},
+        min_mark: {$min: "$marks"},
+        avg_mark: {$avg: "$marks"}
+    }
+}])
+
+
+db.developers.aggregate([{
+    $match: {
+        specialty: "Java"
+    }
+}])
+
+
+// вывести студенток, у которых возраст не более 21
+
+db.students.aggregate([{
+    $match: {
+        gender: 'f',
+        age: {$lte: 21 }
+    }
+}])
+
+//  добавить project и вывести только имя, фамилию, пол и возраст
+
+db.students.aggregate([
+    {
+        $project: {
+            first_name: 1,
+            last_name: 1,
+            gender: 1, 
+            age: 1,
+            _id: 0
+        }
+    },
+    {
+    $match: {
+        gender: 'f',
+        age: {$lte: 21 }
+        }
+    }
+])
+
+
+
+db.developers.aggregate([
+    {
+        $project:{
+            _id: 1,
+            title: 1,
+            specialty: 1,
+            first_skill: {$first: "$skills"}
+        }
+    },
+    {
+        $match: {
+            first_skill: "Java"
+        }
+    }
+])
+
+
+// вывести имя и фаммилию студентов и среднюю оценку, у которых средняя оценка больше 5.5
+
+
+db.students.aggregate([
+    {
+        $project: {
+            _id: 0,
+            first_name: 1,
+            last_name: 1,
+            avg_mark: {$avg: "$marks"}
+        }
+    },
+    {
+        $match: {
+            avg_mark: {$gt: 5.5}
+        }
+    }
+])
+
+// Вывести имя и фамилию и суммарную оценку у студентов, у которых суммарная оценка равна 33
+
+db.students.aggregate([
+    {
+        $project: {
+            _id: 0,
+            first_name: 1,
+            last_name: 1,
+            sum_mark: {$sum: "$marks"}
+        }
+    },
+    {
+        $match: {
+            sum_mark: {$eq: 33}
+        }
+    }
+])
+
+db.developers.aggregate([
+    {
+        $sort: {title: 1}
+    }
+])
+
+// вывести студентов в порядке убывания их возраста (9 -> 0)
+
+db.students.aggregate([
+    {
+        $sort: {age: -1}
+    }
+])
+
+
+//  вывести студентов в порядке убывания их возраста (9 -> 0)
+// Вывести имя, фамилию и возраст
+
+
+
+db.students.aggregate([
+    {
+        $sort: {age: -1}
+    },
+    {
+        $project: {
+            first_name: 1,
+            last_name: 1,
+            age: 1,
+            _id: 0
+        }
+    }
+])
+
+
+
+
+
+
+
+
+
+
+
+
